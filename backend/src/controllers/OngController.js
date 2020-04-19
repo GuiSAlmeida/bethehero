@@ -1,0 +1,25 @@
+const connection = require('../database/connection');
+const generateId = require('../utils/generateId');
+
+module.exports = {
+    async index(request, response) {
+        const ongs = await connection('ongs').select('*');
+        return response.json(ongs);
+    },
+
+    async create(request, response) {
+        const { name, email, whats, city, uf } = request.body;
+        const id = generateId();
+
+        await connection('ongs').insert({
+            id,
+            name,
+            email,
+            whats,
+            city,
+            uf,
+        })
+
+        return response.json({id});
+    }
+}
